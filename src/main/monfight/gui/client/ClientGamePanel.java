@@ -14,13 +14,13 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import src.main.shooter.game.ClientGame;
-import src.main.shooter.game.ServerGame.Entity;
-import src.main.shooter.game.entities.BulletEntity;
-import src.main.shooter.game.entities.PistolEntity;
-import src.main.shooter.game.entities.PlatformEntity;
-import src.main.shooter.game.entities.PlayerEntity;
-import src.main.shooter.game.entities.TeamedPlayerEntity;
+import src.main.monfight.game.ClientGame;
+import src.main.monfight.game.ServerGame.Entity;
+import src.main.monfight.game.entities.BulletEntity;
+import src.main.monfight.game.entities.PistolEntity;
+import src.main.monfight.game.entities.PlatformEntity;
+import src.main.monfight.game.entities.PlayerEntity;
+import src.main.monfight.game.entities.TeamedPlayerEntity;
 
 public class ClientGamePanel extends JPanel {
     private static final Logger logger = Logger.getLogger(ClientGamePanel.class.getName());
