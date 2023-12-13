@@ -5,9 +5,9 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
-import src.main.shooter.game.ServerGame;
-import src.main.shooter.game.ServerTeamGame;
-import src.main.shooter.net.Server;
+import src.main.monfight.game.ServerGame;
+import src.main.monfight.game.ServerTeamGame;
+import src.main.monfight.net.Server;
 
 public class ServerMainFrame extends JFrame {
     private Server server;

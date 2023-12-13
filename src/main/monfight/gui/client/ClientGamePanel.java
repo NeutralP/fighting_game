@@ -25,7 +25,7 @@ import src.main.monfight.game.entities.TeamedPlayerEntity;
 public class ClientGamePanel extends JPanel {
     private static final Logger logger = Logger.getLogger(ClientGamePanel.class.getName());
 
-    private final double[][] gameViewRanges = new double[][] { { 0, 10 }, { 0, 10 } }; // {xRange, yRange}
+    private final double[][] gameViewRanges = new double[][] { { 0, 20 }, { 0, 20 } }; // {xRange, yRange}
     private final ClientGame game;
     private final Sprites sprites = new Sprites();
 
@@ -138,14 +138,14 @@ public class ClientGamePanel extends JPanel {
                 // TODO: create actual sprite
                 sprite = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
                 final Graphics2D spriteGraphics2d = sprite.createGraphics();
-                spriteGraphics2d.setColor(Color.BLUE);
+                spriteGraphics2d.setColor(Color.BLACK);
                 spriteGraphics2d.drawRect(0, 0, 1, 1);
                 spriteGraphics2d.dispose();
             } else {
                 // create a purple square
                 sprite = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
                 final Graphics2D spriteGraphics2d = sprite.createGraphics();
-                spriteGraphics2d.setColor(Color.MAGENTA);
+                spriteGraphics2d.setColor(Color.WHITE);
                 spriteGraphics2d.drawRect(0, 0, 1, 1);
                 spriteGraphics2d.dispose();
 
@@ -156,7 +156,7 @@ public class ClientGamePanel extends JPanel {
     }
 
     private void drawDebugGrid(final Graphics2D graphics2d) {
-        graphics2d.setColor(Color.BLACK);
+        graphics2d.setColor(Color.WHITE);
 
         // vert
         for (int gameX = (int) gameViewRanges[0][0] - 1; gameX < gameViewRanges[0][1] + 1; gameX++) {
