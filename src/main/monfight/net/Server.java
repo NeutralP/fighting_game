@@ -115,7 +115,7 @@ public class Server implements Runnable {
             try {
                 final Socket socket = serverSocket.accept();
                 System.out.println("A new client has connected.");
-                final ClientHandler clientHandler = new ClientHandler(this, socket, game.spawnPlayerEntity());
+                final ClientHandler clientHandler = new ClientHandler(this, socket, game.spawnPlayerEntity(1));
                 clientHandlers.add(clientHandler);
                 new Thread(clientHandler).start();
             } catch (final IOException e) {

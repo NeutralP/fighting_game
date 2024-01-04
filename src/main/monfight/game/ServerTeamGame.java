@@ -15,16 +15,16 @@ public class ServerTeamGame extends ServerGame {
     }
 
     @Override
-    public int spawnPlayerEntity() {
+    public int spawnPlayerEntity(int weapon) {
         TeamedPlayerEntity playerEntity;
         if (redTeamPlayers.size() < blueTeamPlayers.size()) {
             playerEntity = new TeamedPlayerEntity(this, Team.RED, 1, 3,
-                    HorDirection.RIGHT);
+                    HorDirection.RIGHT, 100, weapon);
             redTeamPlayers.add(playerEntity);
             System.out.println("New red team player.");
         } else {
             playerEntity = new TeamedPlayerEntity(this, Team.BLUE, 8, 3,
-                    HorDirection.LEFT);
+                    HorDirection.LEFT, 100, weapon);
             blueTeamPlayers.add(playerEntity);
             System.out.println("New blue team player.");
         }

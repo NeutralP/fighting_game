@@ -17,7 +17,8 @@ import javax.swing.JPanel;
 import src.main.monfight.game.ClientGame;
 import src.main.monfight.game.ServerGame.Entity;
 import src.main.monfight.game.entities.BulletEntity;
-import src.main.monfight.game.entities.PistolEntity;
+import src.main.monfight.game.entities.BulletSwordEntity;
+import src.main.monfight.game.entities.WeaponEntity;
 import src.main.monfight.game.entities.PlatformEntity;
 import src.main.monfight.game.entities.PlayerEntity;
 import src.main.monfight.game.entities.TeamedPlayerEntity;
@@ -28,7 +29,10 @@ public class ClientGamePanel extends JPanel {
     private final double[][] gameViewRanges = new double[][] { { 0, 20 }, { 0, 20 } }; // {xRange, yRange}
     private final ClientGame game;
     private final Sprites sprites = new Sprites();
-
+    
+    
+    // Thêm trường chiều cao của thanh máu
+    private static final int healthBarHeight = 5;
     private static class Sprites {
         private final BufferedImage rightPlayerSprite,
                 leftPlayerSprite,
@@ -37,7 +41,12 @@ public class ClientGamePanel extends JPanel {
                 rightPistolSprite,
                 leftPistolSprite,
                 rightBulletSprite,
-                leftBulletSprite;
+                leftBulletSprite,
+                rightBulletSwordSprite,
+                leftBulletSwordSprite,
+                rightSwordSprite,
+                leftSwordSprite
+                ;
 
         private Sprites() {
             try {
@@ -49,9 +58,15 @@ public class ClientGamePanel extends JPanel {
 
                 rightPistolSprite = ImageIO.read(new File("src/res/Right-Facing-Pistol.png"));
                 leftPistolSprite = getReflectedImage(rightPistolSprite);
+                
+                rightSwordSprite = ImageIO.read(new File("src/res/Right-Facing-Sword.png"));
+                leftSwordSprite = getReflectedImage(rightSwordSprite);
 
                 rightBulletSprite = ImageIO.read(new File("src/res/Right-Facing-Bullet.png"));
                 leftBulletSprite = getReflectedImage(rightBulletSprite);
+                
+                rightBulletSwordSprite = ImageIO.read(new File("src/res/Right-Facing-Bullet_Sword.png"));
+                leftBulletSwordSprite = getReflectedImage(rightBulletSwordSprite);
             } catch (final IOException e) {
                 throw new RuntimeException(e);
             }
@@ -108,6 +123,7 @@ public class ClientGamePanel extends JPanel {
 
             if (entity instanceof final PlayerEntity playerEntity) {
                 if (playerEntity instanceof final TeamedPlayerEntity teamedPlayerEntity) {
+                	drawHealthBar(graphics2d, entity.getX(), entity.getY(), playerEntity.getHealth());
                     sprite = switch (teamedPlayerEntity.getTeam()) {
                         case RED -> switch (playerEntity.getHorDirection()) {
                             case LEFT -> sprites.leftPlayerSprite;
@@ -119,22 +135,37 @@ public class ClientGamePanel extends JPanel {
                         };
                     };
                 } else {
+                	drawHealthBar(graphics2d, entity.getX(), entity.getY(), playerEntity.getHealth());
                     sprite = switch (playerEntity.getHorDirection()) {
                         case LEFT -> sprites.leftPlayerSprite;
                         case RIGHT -> sprites.rightPlayerSprite;
                     };
                 }
-            } else if (entity instanceof final PistolEntity pistolEntity) {
-                sprite = switch (pistolEntity.getHorDirection()) {
+            } else if (entity instanceof final WeaponEntity weaponEntity) {
+            	if (weaponEntity.getWeapon() == 1) {
+                    sprite = switch (weaponEntity.getHorDirection()) {
+                    case LEFT -> sprites.leftSwordSprite;
+                    case RIGHT -> sprites.rightSwordSprite;
+                    };}
+                else {
+            		sprite = switch (weaponEntity.getHorDirection()) {
                     case LEFT -> sprites.leftPistolSprite;
                     case RIGHT -> sprites.rightPistolSprite;
                 };
+            	}
             } else if (entity instanceof final BulletEntity bulletEntity) {
                 sprite = switch (bulletEntity.getHorDirection()) {
                     case LEFT -> sprites.leftBulletSprite;
                     case RIGHT -> sprites.rightBulletSprite;
                 };
-            } else if (entity instanceof final PlatformEntity platformEntity) {
+            }
+            else if (entity instanceof final BulletSwordEntity bulletSwordEntity) {
+                sprite = switch (bulletSwordEntity.getHorDirection()) {
+                    case LEFT -> sprites.leftBulletSwordSprite;
+                    case RIGHT -> sprites.rightBulletSwordSprite;
+                };
+            }
+            else if (entity instanceof final PlatformEntity platformEntity) {
                 // TODO: create actual sprite
                 sprite = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
                 final Graphics2D spriteGraphics2d = sprite.createGraphics();
@@ -205,5 +236,20 @@ public class ClientGamePanel extends JPanel {
 
         final double newLength = newRange * ratio;
         return (int) Math.round(newLength);
+    }
+    
+    //HEALTH
+    private void drawHealthBar(Graphics2D g2d, double x, double y, double health) {
+        // Xác định tọa độ và kích thước của thanh máu
+        final int x1 = remapXCoords(x);
+        final int y1 = remapYCoords(y) - healthBarHeight - 80; // 2 là khoảng cách giữa thanh máu và nhân vật
+        final int width = rescaleWidth(2);
+        final int healthBarWidth = (int) (width * (health / 100)); // MAX_HEALTH là giá trị tối đa của máu
+
+        // Vẽ thanh máu
+        g2d.setColor(Color.RED);
+        g2d.fillRect(x1, y1, healthBarWidth, healthBarHeight);
+        g2d.setColor(Color.BLACK);
+        g2d.drawRect(x1, y1, width, healthBarHeight);
     }
 }

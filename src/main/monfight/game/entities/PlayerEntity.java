@@ -8,21 +8,25 @@ import src.main.monfight.game.action.Action;
 public class PlayerEntity extends Entity implements HorDirectionedEntity, GravitationalEntity {
     private static final long serialVersionUID = -3022640676588904126L;
 
-    private final PistolEntity pistol;
 
     private HorDirection horDirection;
     private double xVel, yVel;
+    private double health;
+    private final WeaponEntity pistol;
+    private int weapon;
 
     public PlayerEntity(final ServerGame game, final double x, final double y,
-            final HorDirection direction) {
+            final HorDirection direction, final double h, final int w) {
         super(game, 1, 2, x, y);
 
         this.horDirection = direction;
 
         xVel = 0;
         yVel = 0;
+        health = h;
+        weapon = w;
 
-        this.pistol = new PistolEntity(this);
+        this.pistol = new WeaponEntity(this, weapon);
     }
 
     @Override
@@ -44,7 +48,20 @@ public class PlayerEntity extends Entity implements HorDirectionedEntity, Gravit
     public void setXVel(final double xVel) {
         this.xVel = xVel;
     }
+    
+    public double getHealth() {
+        return health;
+    }
+    
+    public void updateHealth(double amount) {
+        health += amount;
 
+        // Đảm bảo máu không vượt quá giới hạn
+        health = Math.min(GameSettings.MAX_HEALTH, health);
+        health = Math.max(0, health);
+    }
+
+    
     @Override
     public HorDirection getHorDirection() {
         return horDirection;
@@ -68,17 +85,12 @@ public class PlayerEntity extends Entity implements HorDirectionedEntity, Gravit
                 }
 
                 case SHOOT: {
-                    if (pistol.getHorDirection() == HorDirection.LEFT) {
-                        new BulletEntity(getGame(), this, pistol.getLeftX(), pistol.getTopY(),
-                                -GameSettings.BULLET_SPEED,
-                                XAxisType.LEFT, YAxisType.TOP);
-                    } else if (pistol.getHorDirection() == HorDirection.RIGHT) {
-                        new BulletEntity(getGame(), this, pistol.getRightX(), pistol.getTopY(),
-                                GameSettings.BULLET_SPEED,
-                                XAxisType.RIGHT, YAxisType.TOP);
-                    } else {
-                        ServerGame.getLogger().warning("Unknown direction \"" + pistol.getHorDirection() + "\".");
-                    }
+                	if (weapon == 1) {
+                		sword_shoot();
+                	}
+                	else {
+                		gun_shoot();
+                	}
                     break;
                 }
 
@@ -139,12 +151,52 @@ public class PlayerEntity extends Entity implements HorDirectionedEntity, Gravit
                 this.setYVel(0);
             }
         } else if (otherEntity instanceof BulletEntity) {
-            die();
+        	updateHealth(-10);
+        	getGame().removeEntity(otherEntity.getId());
+        	if (this.health <= 0) {
+        		die();
+            }
+        }
+	    else if (otherEntity instanceof BulletSwordEntity) {
+	    	updateHealth(-30);
+	    	getGame().removeEntity(otherEntity.getId());
+	    	if (this.health <= 0) {
+	    		die();
+	        }
+	    }
+    }
+    
+    public void gun_shoot() {
+    	if (pistol.getHorDirection() == HorDirection.LEFT) {
+            new BulletEntity(getGame(), this, pistol.getLeftX()-0.2, pistol.getTopY()-0.35,
+                    -GameSettings.BULLET_SPEED,
+                    XAxisType.LEFT, YAxisType.TOP);
+        } else if (pistol.getHorDirection() == HorDirection.RIGHT) {
+            new BulletEntity(getGame(), this, pistol.getRightX()+0.2, pistol.getTopY()-0.35,
+                    GameSettings.BULLET_SPEED,
+                    XAxisType.RIGHT, YAxisType.TOP);
+        } else {
+            ServerGame.getLogger().warning("Unknown direction \"" + pistol.getHorDirection() + "\".");
         }
     }
-
-    private void die() { // might cause concurrent mod issues
-        getGame().removeEntity(getId());
+    
+    public void sword_shoot() {
+    	if (pistol.getHorDirection() == HorDirection.LEFT) {
+            new BulletSwordEntity(getGame(), this, pistol.getLeftX()-1, pistol.getTopY()+1,
+                    -GameSettings.SWORD_BULLET_SPEED,
+                    XAxisType.LEFT, YAxisType.TOP);
+        } else if (pistol.getHorDirection() == HorDirection.RIGHT) {
+            new BulletSwordEntity(getGame(), this, pistol.getRightX()+1, pistol.getTopY()+1,
+                    GameSettings.SWORD_BULLET_SPEED,
+                    XAxisType.RIGHT, YAxisType.TOP);
+        } else {
+            ServerGame.getLogger().warning("Unknown direction \"" + pistol.getHorDirection() + "\".");
+        }
+    }
+    
+    private void die() {
+      getGame().removeEntity(getId());
+      getGame().removeEntity(this.pistol.getId());
     }
 }
 

@@ -11,8 +11,8 @@ public class TeamedPlayerEntity extends PlayerEntity {
     private final Team team;
 
     public TeamedPlayerEntity(final ServerGame game, final Team team, final double x, final double y,
-            final HorDirection direction) {
-        super(game, x, y, direction);
+            final HorDirection direction, final double health, final int weapon) {
+        super(game, x, y, direction, health, weapon);
         this.team = team;
     }
 
