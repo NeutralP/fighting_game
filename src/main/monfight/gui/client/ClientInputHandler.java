@@ -9,10 +9,6 @@ import src.main.monfight.game.action.Action;
 import src.main.monfight.utils.ArraySet;
 
 public class ClientInputHandler implements KeyListener {
-    /**
-     * In mac and other OS, when a key is held for ~5 seconds, the OS counts it as
-     * being rapidly pressed. This is to ensure that press only refers to when
-     */
     private final boolean[] previouslyPressed;
     private final ClientGame game;
 
@@ -50,16 +46,19 @@ public class ClientInputHandler implements KeyListener {
                 break;
             }
 
-            case KeyEvent.VK_SPACE: {
+            case KeyEvent.VK_W: {
                 instantActions.add(Action.JUMP);
                 break;
             }
 
-            case KeyEvent.VK_ENTER: {
+            case KeyEvent.VK_J: {
                 instantActions.add(Action.SHOOT);
                 break;
             }
-
+            case KeyEvent.VK_K: {
+                instantActions.add(Action.SWITCH);
+                break;
+            }
             default:
                 break;
         }

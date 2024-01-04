@@ -18,13 +18,13 @@ public class ServerTeamGame extends ServerGame {
     public int spawnPlayerEntity(int weapon) {
         TeamedPlayerEntity playerEntity;
         if (redTeamPlayers.size() < blueTeamPlayers.size()) {
-            playerEntity = new TeamedPlayerEntity(this, Team.RED, 1, 3,
-                    HorDirection.RIGHT, 100, weapon);
+            playerEntity = new TeamedPlayerEntity(this, Team.RED, 16, 5,
+                    HorDirection.RIGHT, 100);
             redTeamPlayers.add(playerEntity);
             System.out.println("New red team player.");
         } else {
-            playerEntity = new TeamedPlayerEntity(this, Team.BLUE, 8, 3,
-                    HorDirection.LEFT, 100, weapon);
+            playerEntity = new TeamedPlayerEntity(this, Team.BLUE, 4.5, 14,
+                    HorDirection.LEFT, 100);
             blueTeamPlayers.add(playerEntity);
             System.out.println("New blue team player.");
         }

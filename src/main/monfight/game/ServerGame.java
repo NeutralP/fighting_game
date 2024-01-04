@@ -159,7 +159,7 @@ public class ServerGame {
     }
 
     public class GameSettings {
-    	public static final double GAME_SPEED = 1;
+    	public static final double GAME_SPEED = 2;
         public static final double GLOBAL_GRAVITY = -0.05*GAME_SPEED;
 
         public static final double WALK_SPEED = 0.125*GAME_SPEED;
@@ -168,8 +168,8 @@ public class ServerGame {
         public static final double BULLET_SPEED = 0.25*GAME_SPEED;
         public static final double SWORD_BULLET_SPEED = 0.25*GAME_SPEED;
         
-        public static final double BULLET_LIFESPAN = 20/GAME_SPEED;
-        public static final double BULLET_SWORD_LIFESPAN = 5/GAME_SPEED;
+        public static final double BULLET_LIFESPAN = 50;
+        public static final double BULLET_SWORD_LIFESPAN = 5;
         
         public static final double MAX_HEALTH = 100;
     }
@@ -229,7 +229,7 @@ public class ServerGame {
      * @return New entity's id.
      */
     public int spawnPlayerEntity(int weapon) {
-        final PlayerEntity player = new PlayerEntity(this, 4.5, 5, HorDirection.LEFT, 100, weapon);
+        final PlayerEntity player = new PlayerEntity(this, 4.5, 5, HorDirection.LEFT, 100);
         return player.getId();
     }
 

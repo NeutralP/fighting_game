@@ -69,6 +69,9 @@ public class BulletEntity extends Entity implements HorDirectionedEntity {
         else if(otherEntity instanceof PlayerEntity) {
             getGame().removeEntity(getId());
         }
+        else if(otherEntity instanceof BulletSwordEntity) {
+            getGame().removeEntity(getId());
+        }
     }
 
     @Override
