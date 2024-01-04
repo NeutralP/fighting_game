@@ -3,17 +3,19 @@ package src.main.monfight.game.entities;
 import src.main.monfight.game.ServerGame.Entity;
 import src.main.monfight.game.entities.HorDirectionedEntity.HorDirection;
 
-public class PistolEntity extends Entity {
+public class WeaponEntity extends Entity {
     private static final long serialVersionUID = 348408736704866955L;
 
     private final PlayerEntity owner;
-
-    public PistolEntity(final PlayerEntity owner) {
+    private final int weapon; //1 is sword, other is gun
+    
+    public WeaponEntity(final PlayerEntity owner, final int weapon) {
+    	super(owner.getGame(), 1., 2., Double.NaN, Double.NaN);
         // the 3 and 2 are dimensions of the pistol. the division by 8 is because the
         // player is 16x8 pixels and considered 2x1 in the game
-        super(owner.getGame(), 3. / 8., 2. / 8., Double.NaN, Double.NaN);
 
         this.owner = owner;
+        this.weapon = weapon;
     }
 
     @Override
@@ -31,7 +33,7 @@ public class PistolEntity extends Entity {
 
     @Override
     public double getY() {
-        return owner.getBottomY() + 1.25;
+        return owner.getBottomY() + 0.;
     }
 
     @Override
@@ -45,5 +47,9 @@ public class PistolEntity extends Entity {
 
     public HorDirection getHorDirection() {
         return owner.getHorDirection();
+    }
+    
+    public int getWeapon() {
+    	return weapon;
     }
 }

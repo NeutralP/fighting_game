@@ -2,3 +2,4 @@
 /ClientPacket.class
 /DisconnectPacket.class
 /ServerPacket.class
+/PlayerInfoPacket.class

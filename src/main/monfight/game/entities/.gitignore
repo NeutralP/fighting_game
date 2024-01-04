@@ -11,3 +11,7 @@
 /Vector2D.class
 /XAxisType.class
 /YAxisType.class
+/SwordEntity.class
+/SwordBulletEntity.class
+/BulletSwordEntity.class
+/WeaponEntity.class

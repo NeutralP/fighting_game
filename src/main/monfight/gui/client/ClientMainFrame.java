@@ -55,7 +55,7 @@ public class ClientMainFrame extends JFrame {
         }
 
         getContentPane().removeAll();
-
+        
         final ClientGamePanel gamePanel = new ClientGamePanel(client.getGame());
 
         add(gamePanel, BorderLayout.CENTER);

@@ -3,20 +3,20 @@ package src.main.monfight.game.entities;
 import src.main.monfight.game.ServerGame;
 import src.main.monfight.game.ServerGame.Entity;
 
-public class BulletEntity extends Entity implements HorDirectionedEntity {
+public class BulletSwordEntity extends Entity implements HorDirectionedEntity {
     private static final long serialVersionUID = 2690256651740709424L;
 
     private final PlayerEntity shooter;
     private int age = 0;
     private final double horVel;
 
-    public BulletEntity(final ServerGame game, final PlayerEntity shooter, final double x, final double y,
+    public BulletSwordEntity(final ServerGame game, final PlayerEntity shooter, final double x, final double y,
             final double horVel,
             final XAxisType xAxisType, final YAxisType yAxisType) {
         /*
          * TODO: add a rectangle class, this is becoming a problem
          */
-        super(game, 2. / 8., 1. / 8., x, y);
+        super(game, 2., 3., x, y);
 
         this.shooter = shooter;
 
@@ -50,7 +50,7 @@ public class BulletEntity extends Entity implements HorDirectionedEntity {
 
     @Override
     public void tick() {
-        if (age >= ServerGame.GameSettings.BULLET_LIFESPAN) {
+        if (age >= ServerGame.GameSettings.BULLET_SWORD_LIFESPAN) {
             getGame().removeEntity(getId());
             return;
         }
