@@ -45,7 +45,8 @@ public class ClientGamePanel extends JPanel {
                 rightBulletSwordSprite,
                 leftBulletSwordSprite,
                 rightSwordSprite,
-                leftSwordSprite
+                leftSwordSprite,
+                bG
                 ;
 
         private Sprites() {
@@ -67,6 +68,8 @@ public class ClientGamePanel extends JPanel {
                 
                 rightBulletSwordSprite = ImageIO.read(new File("src/res/Right-Facing-Bullet_Sword.png"));
                 leftBulletSwordSprite = getReflectedImage(rightBulletSwordSprite);
+                		
+                bG = ImageIO.read(new File("src/res/BG.png"));
             } catch (final IOException e) {
                 throw new RuntimeException(e);
             }
@@ -103,10 +106,13 @@ public class ClientGamePanel extends JPanel {
     public void paint(final Graphics g) {
         // System.out.println("Starting to paint.");
         final Graphics2D graphics2d = (Graphics2D) g;
-
-        drawDebugGrid(graphics2d);
+        graphics2d.drawImage(sprites.bG, 0, 0, 720, 720, null);
+        
+        //PIXELS
+        //drawDebugGrid(graphics2d);
 
         for (final Entity entity : game.getEntities().values()) {
+        	
             // System.out.println("Entity " + entity.getId() +
             // ": [x=" + entity.getX() + ", y=" + entity.getY() + ", w="
             // + entity.getWidth() + ", h=" + entity.getHeight() + "]");
@@ -120,7 +126,8 @@ public class ClientGamePanel extends JPanel {
             final int width = maxX - minX, height = maxY - minY;
 
             final BufferedImage sprite;
-
+            
+            
             if (entity instanceof final PlayerEntity playerEntity) {
                 if (playerEntity instanceof final TeamedPlayerEntity teamedPlayerEntity) {
                 	drawHealthBar(graphics2d, entity.getX(), entity.getY(), playerEntity.getHealth());
@@ -167,9 +174,9 @@ public class ClientGamePanel extends JPanel {
             }
             else if (entity instanceof final PlatformEntity platformEntity) {
                 // TODO: create actual sprite
-                sprite = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+                sprite = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
                 final Graphics2D spriteGraphics2d = sprite.createGraphics();
-                spriteGraphics2d.setColor(Color.BLACK);
+                spriteGraphics2d.setColor(new Color(0,0,0,0));
                 spriteGraphics2d.drawRect(0, 0, 1, 1);
                 spriteGraphics2d.dispose();
             } else {
