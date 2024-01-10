@@ -50,10 +50,9 @@ public class GameMenu extends JFrame {
         matchGameButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Create and show an instance of ClientMainFrame
+                // Create and show an instance of LobbyClientGui
                 SwingUtilities.invokeLater(() -> {
-                    ClientMainFrame clientMainFrame = new ClientMainFrame();
-                    clientMainFrame.setVisible(true);
+                	new LobbyClientGui();
                 });
             }
         });

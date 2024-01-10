@@ -13,6 +13,8 @@ import javax.swing.text.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.html.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import src.main.monfight.SinglePlayerRunner;
 import src.main.monfight.gui.client.ClientMainFrame;
@@ -33,14 +35,36 @@ public class LobbyClientGui extends Thread{
   private String serverName;
   private int PORT;
   private String name;
+  private String password;
   BufferedReader input;
   PrintWriter output;
   Socket server;
+  MouseListener mouseListener = new MouseAdapter() {
+    public void mousePressed(MouseEvent e) {
+        if (SwingUtilities.isRightMouseButton(e)) {
+            int index = userList.locationToIndex(e.getPoint());
+            userList.setSelectedIndex(index);
+            String selectedUser = (String) userList.getSelectedValue();
+            JPopupMenu menu = new JPopupMenu();
+            JMenuItem menuItem = new JMenuItem("Match request");
+            menuItem.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+//                	System.out.println("&" + selectedUser.substring(1, selectedUser.length()));
+                	jtextInputChat.setText("^" + selectedUser.substring(1, selectedUser.length()));
+                	sendMessage();
+                }
+            });
+            menu.add(menuItem);
+            menu.show(userList, e.getX(), e.getY());
+        }
+    }
+};
 
   public LobbyClientGui() {
     this.serverName = "localhost";
     this.PORT = 12345;
     this.name = "nickname";
+    this.password = "password";
 
     String fontfamily = "Arial, sans-serif";
     Font font = new Font(fontfamily, Font.PLAIN, 15);
@@ -299,6 +323,7 @@ public class LobbyClientGui extends Thread{
         		    userListModel.clear();
         		    for (String user : ListUser) {
         		        userListModel.addElement("@" + user);
+                    userList.addMouseListener(mouseListener);
         		    }
     		    
         		}	else if (message.startsWith("IP: ")) {
