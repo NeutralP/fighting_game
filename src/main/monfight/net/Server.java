@@ -84,9 +84,8 @@ import src.main.monfight.net.packets.DisconnectPacket;
  * selected item were committed at t=10, one must be done before the other.
  */
 public class Server implements Runnable {
-    private final int TICKS_PER_SECOND = 20;
+    private final int TICKS_PER_SECOND = 30;
     private final int MILLISECONDS_PER_TICK = 1000000000 / TICKS_PER_SECOND;
-
     public final static int DEFAULT_PORT_NUMBER = 1234;
 
     private final ServerGame game;
