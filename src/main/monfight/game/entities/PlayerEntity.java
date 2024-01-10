@@ -14,10 +14,11 @@ public class PlayerEntity extends Entity implements HorDirectionedEntity, Gravit
     private double health;
     private WeaponEntity weaponEntity;
     private int weapon = 1;
+    private int currentFrame = 0;
 
     public PlayerEntity(final ServerGame game, final double x, final double y,
             final HorDirection direction, final double h) {
-        super(game, 1, 2, x, y);
+        super(game, 2, 2, x, y);
 
         this.horDirection = direction;
 
@@ -57,6 +58,14 @@ public class PlayerEntity extends Entity implements HorDirectionedEntity, Gravit
         // Đảm bảo máu không vượt quá giới hạn
         health = Math.min(GameSettings.MAX_HEALTH, health);
         health = Math.max(0, health);
+    }
+    
+    public void setCurrentFrame(final int currentFrame) {
+    	this.currentFrame = currentFrame;
+    }
+    
+    public int getCurrentFrame() {
+    	return currentFrame;
     }
 
     
@@ -117,12 +126,14 @@ public class PlayerEntity extends Entity implements HorDirectionedEntity, Gravit
                 case LEFT_WALK: {
                     setHorDirection(HorDirection.LEFT);
                     shiftX(-GameSettings.WALK_SPEED);
+                    setCurrentFrame((getCurrentFrame()+1)%4);
                     break;
                 }
 
                 case RIGHT_WALK: {
                     setHorDirection(HorDirection.RIGHT);
                     shiftX(GameSettings.WALK_SPEED);
+                    setCurrentFrame((getCurrentFrame()+1)%4);
                     break;
                 }
 

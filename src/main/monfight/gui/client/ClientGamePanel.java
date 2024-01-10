@@ -29,15 +29,20 @@ public class ClientGamePanel extends JPanel {
     private final double[][] gameViewRanges = new double[][] { { 0, 20 }, { 0, 20 } }; // {xRange, yRange}
     private final ClientGame game;
     private final Sprites sprites = new Sprites();
-    
-    
     // Thêm trường chiều cao của thanh máu
     private static final int healthBarHeight = 5;
     private static class Sprites {
-        private final BufferedImage rightPlayerSprite,
-                leftPlayerSprite,
-                rightBluePlayerSprite,
-                leftBluePlayerSprite,
+    	private final BufferedImage[] 
+    			rightWalkFrames,
+    			leftWalkFrames,
+    			rightBlueWalkFrames,
+    			leftBlueWalkFrames
+    			;
+        private final BufferedImage 
+        		//rightPlayerSprite,
+                //leftPlayerSprite,
+                //rightBluePlayerSprite,
+                //leftBluePlayerSprite,
                 rightPistolSprite,
                 leftPistolSprite,
                 rightBulletSprite,
@@ -51,11 +56,11 @@ public class ClientGamePanel extends JPanel {
 
         private Sprites() {
             try {
-                rightPlayerSprite = ImageIO.read(new File("src/res/Right-Facing-Red-Shooter.png"));
-                leftPlayerSprite = getReflectedImage(rightPlayerSprite);
+//                rightPlayerSprite = ImageIO.read(new File("src/res/Right-Facing-Red-Shooter.png"));
+//                leftPlayerSprite = getReflectedImage(rightPlayerSprite);
 
-                rightBluePlayerSprite = ImageIO.read(new File("src/res/Right-Facing-Blue-Shooter.png"));
-                leftBluePlayerSprite = getReflectedImage(rightBluePlayerSprite);
+//                rightBluePlayerSprite = ImageIO.read(new File("src/res/Right-Facing-Blue-Shooter.png"));
+//                leftBluePlayerSprite = getReflectedImage(rightBluePlayerSprite);
 
                 rightPistolSprite = ImageIO.read(new File("src/res/Right-Facing-Pistol.png"));
                 leftPistolSprite = getReflectedImage(rightPistolSprite);
@@ -70,6 +75,17 @@ public class ClientGamePanel extends JPanel {
                 leftBulletSwordSprite = getReflectedImage(rightBulletSwordSprite);
                 		
                 bG = ImageIO.read(new File("src/res/BG.png"));
+                
+                rightWalkFrames = new BufferedImage[4];
+                leftWalkFrames = new BufferedImage[4];
+                rightBlueWalkFrames = new BufferedImage[4];
+                leftBlueWalkFrames = new BufferedImage[4];
+                for (int i = 0; i < 4; i++) {
+                    rightWalkFrames[i] = ImageIO.read(new File("src/res/Red-Player/Right-Walk-Frame-" + i + ".png"));
+                    leftWalkFrames[i] = getReflectedImage(rightWalkFrames[i]);
+                    rightBlueWalkFrames[i] = ImageIO.read(new File("src/res/Blue-Player/Right-Walk-Frame-" + i + ".png"));
+                    leftBlueWalkFrames[i] = getReflectedImage(rightBlueWalkFrames[i]);
+                }
             } catch (final IOException e) {
                 throw new RuntimeException(e);
             }
@@ -101,19 +117,18 @@ public class ClientGamePanel extends JPanel {
     public Dimension getMinimumSize() {
         return getPreferredSize();
     }
-
+    
+    private int currentFrame = 0;
     @Override
     public void paint(final Graphics g) {
         // System.out.println("Starting to paint.");
         final Graphics2D graphics2d = (Graphics2D) g;
         graphics2d.drawImage(sprites.bG, 0, 0, 720, 720, null);
-        
         //PIXELS
         //drawDebugGrid(graphics2d);
-
+        
         for (final Entity entity : game.getEntities().values()) {
-        	
-            // System.out.println("Entity " + entity.getId() +
+            // System.out.println("Entity " + entity.getId() +	
             // ": [x=" + entity.getX() + ", y=" + entity.getY() + ", w="
             // + entity.getWidth() + ", h=" + entity.getHeight() + "]");
 
@@ -127,25 +142,25 @@ public class ClientGamePanel extends JPanel {
 
             final BufferedImage sprite;
             
-            
             if (entity instanceof final PlayerEntity playerEntity) {
+            	currentFrame = playerEntity.getCurrentFrame();
                 if (playerEntity instanceof final TeamedPlayerEntity teamedPlayerEntity) {
                 	drawHealthBar(graphics2d, entity.getX(), entity.getY(), playerEntity.getHealth());
                     sprite = switch (teamedPlayerEntity.getTeam()) {
                         case RED -> switch (playerEntity.getHorDirection()) {
-                            case LEFT -> sprites.leftPlayerSprite;
-                            case RIGHT -> sprites.rightPlayerSprite;
+                            case LEFT -> sprites.leftWalkFrames[currentFrame];
+                            case RIGHT -> sprites.rightWalkFrames[currentFrame];
                         };
                         case BLUE -> switch (playerEntity.getHorDirection()) {
-                            case LEFT -> sprites.leftBluePlayerSprite;
-                            case RIGHT -> sprites.rightBluePlayerSprite;
+                            case LEFT -> sprites.leftBlueWalkFrames[currentFrame];
+                            case RIGHT -> sprites.rightBlueWalkFrames[currentFrame];
                         };
                     };
                 } else {
                 	drawHealthBar(graphics2d, entity.getX(), entity.getY(), playerEntity.getHealth());
                     sprite = switch (playerEntity.getHorDirection()) {
-                        case LEFT -> sprites.leftPlayerSprite;
-                        case RIGHT -> sprites.rightPlayerSprite;
+                        case LEFT -> sprites.leftWalkFrames[currentFrame];
+                        case RIGHT -> sprites.rightWalkFrames[currentFrame];
                     };
                 }
             } else if (entity instanceof final WeaponEntity weaponEntity) {
