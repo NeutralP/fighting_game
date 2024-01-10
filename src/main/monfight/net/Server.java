@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import src.main.monfight.game.ServerGame;
+import src.main.monfight.game.ServerTeamGame;
 import src.main.monfight.net.packets.ActionPacket;
 import src.main.monfight.net.packets.ClientPacket;
 import src.main.monfight.net.packets.DisconnectPacket;
@@ -178,6 +179,6 @@ public class Server implements Runnable {
     }
 
     public static void main(final String[] args) {
-        new Server(new ServerGame(), Server.DEFAULT_PORT_NUMBER).run();
+        new Server(new ServerTeamGame(), Server.DEFAULT_PORT_NUMBER).run();
     }
 }

@@ -12,6 +12,8 @@ import src.main.monfight.net.Client;
 
 public class ClientMainFrame extends JFrame {
     private Client client;
+    private String ipAddress;
+    private int port;
 
     public ClientMainFrame() {
         super("Game");
@@ -29,6 +31,31 @@ public class ClientMainFrame extends JFrame {
             }
         });
 
+        pack();
+        setVisible(true);
+    }
+
+    public ClientMainFrame(final String ipAddress, final int port) {
+
+        super("Game");
+
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(final WindowEvent e) {
+                if (client != null) {
+                    client.disconnect();
+                }
+
+                System.exit(0);
+            }
+        });
+        
+        // Start the game immediately
+//        ((ClientMainFrame) ClientMenuPanel.this.getTopLevelAncestor()).startGame(ipAddress.getText(),
+//                Integer.parseInt(portNumber.getText()));
+        startGame(ipAddress, port);
+        
         pack();
         setVisible(true);
     }
