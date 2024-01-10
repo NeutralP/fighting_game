@@ -1,7 +1,6 @@
-package src.main.menu;
+package src.main.lobbyserver.client;
 import javax.swing.*;
 
-import src.main.menu.GameMenu;
 import src.main.monfight.gui.client.ClientMainFrame;
 
 import java.awt.*;
